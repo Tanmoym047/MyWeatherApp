@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import android.os.Message
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,24 +14,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.FloatingActionButtonElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -48,25 +48,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Green
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.constant.Const.Companion.permissions
-import com.example.myweatherapp.model.Forecast.ForecastResult
 import com.example.myweatherapp.model.LatLng
-import com.example.myweatherapp.model.Weather.WeatherResult
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
 import com.example.myweatherapp.view.ForecastSection
 import com.example.myweatherapp.view.WeatherSection
@@ -80,7 +73,6 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.coroutineScope
-import kotlin.coroutines.coroutineContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -154,6 +146,12 @@ class MainActivity : ComponentActivity() {
         mainViewModel.state = STATE.LOADING
         mainViewModel.getWeatherByLocation(currentLocation)
         mainViewModel.getForecastByLocation(currentLocation)
+        mainViewModel.state = STATE.SUCCESS
+    }
+    private fun fetchWeatherInformationByCity(mainViewModel: MainViewModel) {
+        mainViewModel.state = STATE.LOADING
+        mainViewModel.getWeatherByCity()
+        mainViewModel.getForecastByCity()
         mainViewModel.state = STATE.SUCCESS
     }
 
@@ -251,19 +249,34 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Created By: Tanmoy Mridha", modifier = Modifier.padding(bottom = 8.dp), color = Color.White, fontSize = 16.sp)
-                OutlinedTextField(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-                    value = mainViewModel.city,
-                    onValueChange = {
-                        mainViewModel.onChangeCity(it)
-                    },
-                    textStyle = TextStyle(color = Color.White),
-                    label = { Text(text = "City", color = Color.White)},
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.White,
-                        unfocusedBorderColor = Color.White)
+                Row (
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    OutlinedTextField(
+                        modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
+                        value = mainViewModel.city,
+                        onValueChange = {
+                            mainViewModel.onChangeCity(it)
+                        },
+                        textStyle = TextStyle(color = Color.White),
+                        label = { Text(text = "City", color = Color.White)},
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.White,
+                            unfocusedBorderColor = Color.White)
 
-                )
+                    )
+                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    Button(
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
+                        shape = RoundedCornerShape(23.dp),
+                        onClick = {
+                            fetchWeatherInformationByCity(mainViewModel)
+                        }
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Search")
+                    }
+                }
+                
 
 
                 when (mainViewModel.state) {

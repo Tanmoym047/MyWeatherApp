@@ -32,22 +32,38 @@ class MainViewModel: ViewModel() {
         city = cityName
     }
 
-//    fun getWeatherByCity(){
-//        viewModelScope.launch{
-//            state = STATE.LOADING
-//            val apiService = RetrofitClient.getInstance()
-//            try {
-//                Log.d("API", "Calling")
-//                val apiResponse = apiService.getWeather()
-//                weatherResponse = apiResponse
-//                state = STATE.SUCCESS
-//            }
-//            catch (e: Exception){
-//                errorMessage = e.message!!.toString()
-//                state = STATE.FAILED
-//            }
-//        }
-//    }
+    fun getWeatherByCity() {
+        viewModelScope.launch{
+            state = STATE.LOADING
+            val apiService = RetrofitClient.getInstance()
+            try {
+                Log.d("API", "Calling")
+                val apiResponse = apiService.getWeatherByCity(this@MainViewModel.city)
+                weatherResponse = apiResponse
+                state = STATE.SUCCESS
+            }
+            catch (e: Exception){
+                errorMessage = e.message!!.toString()
+                state = STATE.FAILED
+            }
+        }
+    }
+
+    fun getForecastByCity(){
+        viewModelScope.launch{
+            state = STATE.LOADING
+            val apiService = RetrofitClient.getInstance()
+            try {
+                val apiResponse = apiService.getForecastByCity(city)
+                forecastResponse = apiResponse
+                state = STATE.SUCCESS
+            }
+            catch (e: Exception){
+                errorMessage = e.message!!.toString()
+                state = STATE.FAILED
+            }
+        }
+    }
 
     fun getWeatherByLocation(latLng: LatLng){
         viewModelScope.launch{
@@ -55,7 +71,7 @@ class MainViewModel: ViewModel() {
             val apiService = RetrofitClient.getInstance()
             try {
                 Log.d("API", "Calling")
-                val apiResponse = apiService.getWeather(latLng.lat, latLng.lng)
+                val apiResponse = apiService.getWeatherByLatLng(latLng.lat, latLng.lng)
                 weatherResponse = apiResponse
                 state = STATE.SUCCESS
             }
@@ -71,7 +87,7 @@ class MainViewModel: ViewModel() {
             state = STATE.LOADING
             val apiService = RetrofitClient.getInstance()
             try {
-                val apiResponse = apiService.getForecast(latLng.lat, latLng.lng)
+                val apiResponse = apiService.getForecastByLatLng(latLng.lat, latLng.lng)
                 forecastResponse = apiResponse
                 state = STATE.SUCCESS
             }

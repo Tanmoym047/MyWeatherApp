@@ -124,8 +124,8 @@ fun WeatherImage(icon: String) {
         model = buildIcon(icon),
         contentDescription = icon,
         modifier = Modifier
-            .width(200.dp)
-            .height(200.dp),
+            .width(180.dp)
+            .height(180.dp),
         contentScale = ContentScale.FillBounds
     )
 }
@@ -133,7 +133,7 @@ fun WeatherImage(icon: String) {
 @Composable
 fun WeatherTitleSection(text: String, subText: String, fontsize: TextUnit) {
     Column (
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
