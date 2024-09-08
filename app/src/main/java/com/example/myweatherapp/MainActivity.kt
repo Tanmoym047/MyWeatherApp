@@ -90,6 +90,7 @@ class MainActivity : ComponentActivity() {
         if(locationRequired) startLocationUpdate()
     }
 
+
     @SuppressLint("MissingPermission")
     private fun startLocationUpdate() {
         locationCallback?.let {
