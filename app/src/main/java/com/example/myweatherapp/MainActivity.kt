@@ -56,12 +56,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.constant.Const.Companion.permissions
 import com.example.myweatherapp.model.LatLng
+import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
 import com.example.myweatherapp.view.ForecastSection
+import com.example.myweatherapp.view.LoginScreen
 import com.example.myweatherapp.view.WeatherSection
 import com.example.myweatherapp.viewmodel.MainViewModel
 import com.example.myweatherapp.viewmodel.STATE
@@ -136,7 +141,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LocationScreen(this@MainActivity ,currentLocation, viewModel = MainViewModel())
+//                    HomeScreen(this@MainActivity ,currentLocation, viewModel = MainViewModel())
+                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel())
                 }
             }
         }
@@ -161,7 +167,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun LocationScreen(context: Context, currentLocation: LatLng, viewModel: MainViewModel) {
+    fun HomeScreen(context: Context, currentLocation: LatLng, viewModel: MainViewModel) {
         val launcherMultiplePermissions = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions()
         ) {
@@ -250,7 +256,9 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = "Created By: Tanmoy Mridha", modifier = Modifier.padding(bottom = 8.dp), color = Color.White, fontSize = 16.sp)
                 Row (
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+
                 ){
                     OutlinedTextField(
                         modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
@@ -265,7 +273,7 @@ class MainActivity : ComponentActivity() {
                             unfocusedBorderColor = Color.White)
 
                     )
-                    Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                     Button(
                         colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
                         shape = RoundedCornerShape(23.dp),
@@ -273,7 +281,7 @@ class MainActivity : ComponentActivity() {
                             fetchWeatherInformationByCity(mainViewModel)
                         }
                     ) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Search")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Search", tint = Color.White)
                     }
                 }
                 
@@ -328,6 +336,23 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             CircularProgressIndicator(color = Color.White)
+        }
+    }
+
+    @Composable
+    fun Navigation(context: Context, currentLocation: LatLng, viewModel: MainViewModel){
+        val navController = rememberNavController()
+
+        NavHost(navController = navController, startDestination = Screen.Login.route) {
+            composable(Screen.Login.route) {
+                LoginScreen(navController, mainViewModel)
+            }
+            composable(Screen.Register.route) {
+//                RegisterScreen(navController, mainViewModel)
+            }
+            composable(Screen.Home.route) {
+                HomeScreen(context, currentLocation, mainViewModel)
+            }
         }
     }
 

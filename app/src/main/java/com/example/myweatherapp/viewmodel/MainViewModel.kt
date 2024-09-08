@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myweatherapp.Graph
+import com.example.myweatherapp.data.user.User
 import com.example.myweatherapp.model.Forecast.ForecastResult
 import com.example.myweatherapp.model.LatLng
 import com.example.myweatherapp.model.Weather.WeatherResult
@@ -16,7 +18,10 @@ enum class STATE{
     LOADING, SUCCESS, FAILED
 }
 
-class MainViewModel: ViewModel() {
+class MainViewModel(
+): ViewModel() {
+
+    val userRepository = Graph.userRepository
     // control state
     var state by mutableStateOf(STATE.LOADING)
     var city by mutableStateOf("")
@@ -97,5 +102,28 @@ class MainViewModel: ViewModel() {
             }
         }
     }
+
+//     user login and register functionality
+
+    var loginState by mutableStateOf<User?>(null)
+
+    fun register(username: String, email: String, password: String) {
+        viewModelScope.launch {
+            userRepository.registerUser(User(username = username, email = email, password = password))
+        }
+    }
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch {
+            loginState = userRepository.loginUser(username, password)
+        }
+    }
+//
+//    lateinit var getAllUsers: Flow<List<User?>>
+//    init {
+//        viewModelScope.launch {
+//            getAllUsers = userRepository.getWishes()
+//        }
+//    }
 
 }

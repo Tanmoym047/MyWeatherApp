@@ -59,10 +59,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx.v261)
     implementation(libs.androidx.activity.compose.v180)
 
+    // navigation
+    implementation (libs.androidx.navigation.compose)
+
+
     // Sqlite
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
 
     // Location
     implementation(libs.play.services.location)
