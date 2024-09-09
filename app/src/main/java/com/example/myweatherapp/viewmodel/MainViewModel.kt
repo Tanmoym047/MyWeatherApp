@@ -118,12 +118,4 @@ class MainViewModel(
             loginState = userRepository.loginUser(username, password)
         }
     }
-//
-//    lateinit var getAllUsers: Flow<List<User?>>
-//    init {
-//        viewModelScope.launch {
-//            getAllUsers = userRepository.getWishes()
-//        }
-//    }
-
 }

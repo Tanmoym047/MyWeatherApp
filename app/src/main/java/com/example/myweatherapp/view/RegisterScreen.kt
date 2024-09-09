@@ -28,10 +28,10 @@ import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.viewmodel.MainViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
+fun RegisterScreen(navController: NavController, mainViewModel: MainViewModel) {
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     val gradient = Brush.linearGradient(
@@ -40,8 +40,6 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         end = Offset(1000f, 1000f)
     )
 
-    Log.d("LoginScreen", "Username: $username, Password: $password")
-
     Column(
         modifier = Modifier
             .background(gradient)
@@ -49,34 +47,19 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-        )
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
-        )
+        TextField(value = username, onValueChange = { username = it }, label = { Text("Username") })
+        TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
+        TextField(value = password, onValueChange = { password = it }, label = { Text("Password") }, visualTransformation = PasswordVisualTransformation())
 
         Button(onClick = {
-//            navController.navigate(Screen.Home.route)
-            mainViewModel.login(username, password)
-            if (mainViewModel.loginState != null) {
-                // Todo location screen
-                navController.navigate(Screen.Home.route)
-            } else {
-                // Show error
-                navController.navigate(Screen.Error.route)
-            }
+            mainViewModel.register(username, email, password)
+            navController.navigate(Screen.Login.route)
         }) {
-            Text("Login")
+            Text("Register")
         }
 
-        TextButton(onClick = { navController.navigate(Screen.Register.route) }) {
-            Text("Don't have an account? Register")
+        TextButton(onClick = { navController.navigate(Screen.Login.route) }) {
+            Text("Already have an account? Login")
         }
     }
 }

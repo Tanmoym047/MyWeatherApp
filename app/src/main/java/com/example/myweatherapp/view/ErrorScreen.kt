@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
@@ -30,18 +31,13 @@ import com.example.myweatherapp.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
+fun ErrorScreen() {
     val gradient = Brush.linearGradient(
         colors = listOf(Color(colorBg1), Color(colorBg2)),
         start = Offset(1000f, -1000f),
         end = Offset(1000f, 1000f)
     )
-
-    Log.d("LoginScreen", "Username: $username, Password: $password")
-
+    
     Column(
         modifier = Modifier
             .background(gradient)
@@ -49,34 +45,6 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-        )
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Button(onClick = {
-//            navController.navigate(Screen.Home.route)
-            mainViewModel.login(username, password)
-            if (mainViewModel.loginState != null) {
-                // Todo location screen
-                navController.navigate(Screen.Home.route)
-            } else {
-                // Show error
-                navController.navigate(Screen.Error.route)
-            }
-        }) {
-            Text("Login")
-        }
-
-        TextButton(onClick = { navController.navigate(Screen.Register.route) }) {
-            Text("Don't have an account? Register")
-        }
+        Text(text = "Wrong Credentials", color = Color.Red, fontSize = 32.sp)
     }
 }

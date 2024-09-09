@@ -14,6 +14,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,9 +22,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,9 +36,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -42,6 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,8 +70,10 @@ import com.example.myweatherapp.constant.Const.Companion.permissions
 import com.example.myweatherapp.model.LatLng
 import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
+import com.example.myweatherapp.view.ErrorScreen
 import com.example.myweatherapp.view.ForecastSection
 import com.example.myweatherapp.view.LoginScreen
+import com.example.myweatherapp.view.RegisterScreen
 import com.example.myweatherapp.view.WeatherSection
 import com.example.myweatherapp.viewmodel.MainViewModel
 import com.example.myweatherapp.viewmodel.STATE
@@ -78,6 +85,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -125,6 +133,9 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(LatLng(0.0, 0.0))
             }
 
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+
             locationCallback = object: LocationCallback(){
                 override fun onLocationResult(p0: LocationResult) {
                     super.onLocationResult(p0)
@@ -138,13 +149,38 @@ class MainActivity : ComponentActivity() {
             }
 
             MyWeatherAppTheme {
-                Surface(
+                Scaffold (
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-//                    HomeScreen(this@MainActivity ,currentLocation, viewModel = MainViewModel())
-                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel())
+                    topBar = {
+                        TopAppBar(
+                            backgroundColor = Color.DarkGray,
+                            title = { Text(text = "MyWeatherApp", color = Color.White) },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = {
+                                        scope.launch {
+                                            scaffoldState.drawerState.open()
+                                        }
+                                    }
+                                ) {
+                                    Icon(imageVector = Icons.Default.Menu, contentDescription = "Hamburger Menu", tint = Color.White)
+                                }
+                            }
+                        )
+                    },
+
+                ){
+                    padding ->
+                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel(), padding)
+
                 }
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+//                ) {
+////                    HomeScreen(this@MainActivity ,currentLocation, viewModel = MainViewModel())
+//                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel())
+//                }
             }
         }
     }
@@ -271,7 +307,8 @@ class MainActivity : ComponentActivity() {
                         label = { Text(text = "City", color = Color.White)},
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = Color.White,
-                            unfocusedBorderColor = Color.White)
+                            unfocusedBorderColor = Color.White
+                        )
 
                     )
                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
@@ -341,7 +378,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Navigation(context: Context, currentLocation: LatLng, viewModel: MainViewModel){
+    fun Navigation(context: Context, currentLocation: LatLng, viewModel: MainViewModel, padding: PaddingValues){
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = Screen.Login.route) {
@@ -349,10 +386,13 @@ class MainActivity : ComponentActivity() {
                 LoginScreen(navController, mainViewModel)
             }
             composable(Screen.Register.route) {
-//                RegisterScreen(navController, mainViewModel)
+                RegisterScreen(navController, mainViewModel)
             }
             composable(Screen.Home.route) {
                 HomeScreen(context, currentLocation, mainViewModel)
+            }
+            composable(Screen.Error.route) {
+                ErrorScreen()
             }
         }
     }
