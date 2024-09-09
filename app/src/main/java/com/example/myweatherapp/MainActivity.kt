@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -68,6 +70,7 @@ import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.constant.Const.Companion.permissions
 import com.example.myweatherapp.model.LatLng
+import com.example.myweatherapp.navigation.DrawerScreen
 import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
 import com.example.myweatherapp.view.ErrorScreen
@@ -150,6 +153,7 @@ class MainActivity : ComponentActivity() {
 
             MyWeatherAppTheme {
                 Scaffold (
+                    scaffoldState = scaffoldState,
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
                         TopAppBar(
@@ -168,19 +172,17 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     },
+                    drawerContent = {
+                        LazyColumn {
 
+                        }
+                        DrawerItem(item = DrawerScreen.History)
+                    }
                 ){
                     padding ->
                     Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel(), padding)
 
                 }
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-////                    HomeScreen(this@MainActivity ,currentLocation, viewModel = MainViewModel())
-//                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel())
-//                }
             }
         }
     }
@@ -394,6 +396,21 @@ class MainActivity : ComponentActivity() {
             composable(Screen.Error.route) {
                 ErrorScreen()
             }
+        }
+    }
+
+    @Composable
+    fun DrawerItem(
+        item: DrawerScreen.History,
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 16.dp)
+
+        ) {
+
+            Text(text = item.route, style = androidx.compose.material.MaterialTheme.typography.h5)
         }
     }
 

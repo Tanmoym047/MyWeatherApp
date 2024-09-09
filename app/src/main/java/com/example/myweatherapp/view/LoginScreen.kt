@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,12 +28,16 @@ import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val scope = rememberCoroutineScope()
+
 
     val gradient = Brush.linearGradient(
         colors = listOf(Color(colorBg1), Color(colorBg2)),
@@ -64,13 +69,17 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         Button(onClick = {
 //            navController.navigate(Screen.Home.route)
             mainViewModel.login(username, password)
+
             if (mainViewModel.loginState != null) {
                 // Todo location screen
                 navController.navigate(Screen.Home.route)
+
             } else {
                 // Show error
                 navController.navigate(Screen.Error.route)
             }
+
+
         }) {
             Text("Login")
         }

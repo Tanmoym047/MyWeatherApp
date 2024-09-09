@@ -6,3 +6,7 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Error : Screen("error")
 }
+
+sealed class DrawerScreen(val route: String) {
+    object History : Screen("history")
+}
