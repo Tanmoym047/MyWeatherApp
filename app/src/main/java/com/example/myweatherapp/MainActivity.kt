@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -63,18 +63,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.constant.Const.Companion.permissions
 import com.example.myweatherapp.model.LatLng
-import com.example.myweatherapp.navigation.DrawerScreen
 import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
 import com.example.myweatherapp.view.ErrorScreen
 import com.example.myweatherapp.view.ForecastSection
+import com.example.myweatherapp.view.HistoryScreen
 import com.example.myweatherapp.view.LoginScreen
 import com.example.myweatherapp.view.RegisterScreen
 import com.example.myweatherapp.view.WeatherSection
@@ -89,6 +96,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -138,6 +146,7 @@ class MainActivity : ComponentActivity() {
             }
 
             val scaffoldState = rememberScaffoldState()
+            val navController = rememberNavController()
             val scope = rememberCoroutineScope()
 
             locationCallback = object: LocationCallback(){
@@ -175,20 +184,48 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     drawerContent = {
-                        LazyColumn {
-
+                        Column {
+                            DrawerItem(item = Screen.Home){
+                                scope.launch {
+                                    scaffoldState.drawerState.close()
+                                }
+                                navController.navigate(Screen.Home.route)
+                            }
+                            DrawerItem(item = Screen.History){
+                                scope.launch {
+                                    scaffoldState.drawerState.close()
+                                }
+                                navController.navigate(Screen.History.route)
+                            }
                         }
-                        DrawerItem(item = DrawerScreen.History)
+
                     }
                 ){
                     padding ->
-                    Navigation(context = this@MainActivity, currentLocation = currentLocation, viewModel = MainViewModel(), padding)
-
+                    Navigation(context = this@MainActivity, navController = navController, currentLocation = currentLocation, viewModel = MainViewModel(), padding)
                 }
             }
         }
+        scheduleWeatherWorker()
     }
+    private fun scheduleWeatherWorker() {
+        // Schedule WorkManager to run the WeatherWorker every 1 hour
+        val weatherWorkerRequest = PeriodicWorkRequestBuilder<WeatherWorker>(1, TimeUnit.HOURS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED) // Ensures internet is available
+                    .build()
+            )
+            .build()
 
+        // Enqueue the work as a unique periodic task
+        WorkManager.getInstance(applicationContext)
+            .enqueueUniquePeriodicWork(
+                "weather_worker",  // Unique name to prevent multiple enqueues of the same work
+                ExistingPeriodicWorkPolicy.KEEP,  // Keeps the worker if it’s already running
+                weatherWorkerRequest
+            )
+    }
 
     private fun fetchWeatherInformation(mainViewModel: MainViewModel, currentLocation: LatLng) {
         mainViewModel.state = STATE.LOADING
@@ -296,6 +333,7 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Text(text = "Created By: Tanmoy Mridha", modifier = Modifier.padding(bottom = 8.dp), color = Color.White, fontSize = 16.sp)
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -383,8 +421,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Navigation(context: Context, currentLocation: LatLng, viewModel: MainViewModel, padding: PaddingValues){
-        val navController = rememberNavController()
+    fun Navigation(context: Context, navController : NavHostController, currentLocation: LatLng, viewModel: MainViewModel, padding: PaddingValues){
+//        val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = Screen.Login.route) {
             composable(Screen.Login.route) {
@@ -399,21 +437,32 @@ class MainActivity : ComponentActivity() {
             composable(Screen.Error.route) {
                 ErrorScreen()
             }
+            composable(Screen.History.route) {
+                HistoryScreen()
+            }
         }
     }
 
     @Composable
     fun DrawerItem(
-        item: DrawerScreen.History,
+        item: Screen,
+        onDrawerItemClicked: () -> Unit
     ){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 16.dp)
+                .clickable {
+                    onDrawerItemClicked()
+                }
 
         ) {
+//            val navController = rememberNavController()
+            Text(
 
-            Text(text = item.route, style = androidx.compose.material.MaterialTheme.typography.h5)
+                text = item.route,
+                style = androidx.compose.material.MaterialTheme.typography.h5
+            )
         }
     }
 

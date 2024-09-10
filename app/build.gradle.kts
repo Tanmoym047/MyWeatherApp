@@ -64,11 +64,14 @@ dependencies {
 
     // Sqlite
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.protolite.well.known.types)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
     // Location
     implementation(libs.play.services.location)
+    implementation(libs.play.services.base)
 
     // Retrofit
     implementation(libs.retrofit)

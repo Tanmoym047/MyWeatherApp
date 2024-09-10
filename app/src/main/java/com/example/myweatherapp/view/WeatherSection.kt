@@ -93,7 +93,7 @@ fun WeatherSection(weatherResponse: WeatherResult) {
 
     WeatherTitleSection(text = title, subText = subTitle, fontsize = 30.sp)
     WeatherImage(icon = icon)
-    WeatherTitleSection(text = temp, subText = description, fontsize = 60.sp)
+    WeatherTitleSection(text = temp, subText = description, fontsize = 40.sp)
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -112,8 +112,8 @@ fun WeatherInfo(icon: FaIconType.SolidIcon, text: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ){
-        FaIcon(faIcon = icon, size = 48.dp, tint = Color.White, modifier = Modifier.padding(bottom = 4.dp))
-        Text(text = text, fontSize = 24.sp, color = Color.White)
+        FaIcon(faIcon = icon, size = 36.dp, tint = Color.White, modifier = Modifier.padding(bottom = 4.dp))
+        Text(text = text, fontSize = 20.sp, color = Color.White)
         
     }
 }
@@ -138,6 +138,6 @@ fun WeatherTitleSection(text: String, subText: String, fontsize: TextUnit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(text = text, color = Color.White, fontSize = fontsize, fontWeight = FontWeight.Bold )
-        Text(text = subText, color = Color.White, fontSize = 16.sp )
+        Text(text = subText, color = Color.White, fontSize = 18.sp )
     }
 }

@@ -5,8 +5,8 @@ sealed class Screen(val route: String) {
     object Register : Screen("register")
     object Home : Screen("home")
     object Error : Screen("error")
+    object History : Screen("history")
+
+
 }
 
-sealed class DrawerScreen(val route: String) {
-    object History : Screen("history")
-}

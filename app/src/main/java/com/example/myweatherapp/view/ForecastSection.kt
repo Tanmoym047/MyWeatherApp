@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myweatherapp.constant.Const.Companion.NA
 import com.example.myweatherapp.constant.Const.Companion.cardColor
@@ -85,16 +86,16 @@ fun ForecastTitle(temp: String, image: String, time: String) {
         )
     ){
         Column (
-            modifier = Modifier.padding(60.dp),
+            modifier = Modifier.padding(40.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Text(text = temp.ifEmpty { NA }, color = Color.White)
+            Text(text = temp.ifEmpty { NA }, color = Color.White, fontSize = 16.sp)
             AsyncImage(model = image, contentDescription = image,
-                modifier = Modifier.width(50.dp).height(50.dp),
+                modifier = Modifier.width(55.dp).height(55.dp),
                 contentScale = ContentScale.FillBounds
             )
-            Text(text = time.ifEmpty { NA }, color = Color.White)
+            Text(text = time.ifEmpty { NA }, color = Color.White, fontSize = 16.sp)
 
         }
     }

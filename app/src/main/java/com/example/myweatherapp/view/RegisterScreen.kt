@@ -61,5 +61,8 @@ fun RegisterScreen(navController: NavController, mainViewModel: MainViewModel) {
         TextButton(onClick = { navController.navigate(Screen.Login.route) }) {
             Text("Already have an account? Login")
         }
+        TextButton(onClick = { navController.navigate(Screen.History.route) }) {
+            Text("History")
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myweatherapp.view
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavController
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
@@ -35,6 +37,9 @@ import kotlinx.coroutines.launch
 fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+
 
     val scope = rememberCoroutineScope()
 
@@ -68,16 +73,21 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
 
         Button(onClick = {
 //            navController.navigate(Screen.Home.route)
-            mainViewModel.login(username, password)
+            scope.launch {
+                mainViewModel.login(username, password)
 
-            if (mainViewModel.loginState != null) {
-                // Todo location screen
-                navController.navigate(Screen.Home.route)
+                if (mainViewModel.loginState != null) {
+                    // Todo location screen
+                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.Home.route)
 
-            } else {
-                // Show error
-                navController.navigate(Screen.Error.route)
+                } else {
+                    // Show error
+                    Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show()
+//                navController.navigate(Screen.Error.route)
+                }
             }
+
 
 
         }) {

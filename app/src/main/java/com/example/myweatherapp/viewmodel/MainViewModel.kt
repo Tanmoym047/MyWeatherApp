@@ -5,7 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.Graph
 import com.example.myweatherapp.data.user.User
@@ -145,10 +147,10 @@ class MainViewModel(
         }
     }
 
-    fun loadWeatherHistory() {
-        viewModelScope.launch(Dispatchers.IO) {
-            weatherHistory = weatherHistoryRepository.getWeatherHistory()
-            // Update UI with history data
+    fun loadWeatherHistory(): LiveData<List<WeatherHistory>> {
+        return liveData {
+            val history = weatherHistoryRepository.getWeatherHistory()
+            emit(history)
         }
     }
 }
