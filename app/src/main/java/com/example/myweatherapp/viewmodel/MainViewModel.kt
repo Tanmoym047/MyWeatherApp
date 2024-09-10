@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.Graph
 import com.example.myweatherapp.data.user.User
+import com.example.myweatherapp.data.weatherHistory.WeatherHistory
 import com.example.myweatherapp.model.Forecast.ForecastResult
 import com.example.myweatherapp.model.LatLng
 import com.example.myweatherapp.model.Weather.WeatherResult
 import com.example.myweatherapp.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 enum class STATE{
@@ -22,6 +24,7 @@ class MainViewModel(
 ): ViewModel() {
 
     val userRepository = Graph.userRepository
+    val weatherHistoryRepository = Graph.weatherHistoryRepository
     // control state
     var state by mutableStateOf(STATE.LOADING)
     var city by mutableStateOf("")
@@ -116,6 +119,30 @@ class MainViewModel(
     fun login(username: String, password: String) {
         viewModelScope.launch {
             loginState = userRepository.loginUser(username, password)
+        }
+    }
+
+
+    // Weather history-related functions
+
+    var weatherHistory by mutableStateOf<List<WeatherHistory>>(emptyList())
+
+    fun saveWeatherHistory(city: String, temperature: Double, condition: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val weather = WeatherHistory(
+                city = city,
+                temperature = temperature,
+                condition = condition,
+                timestamp = System.currentTimeMillis()
+            )
+            weatherHistoryRepository.insertWeatherHistory(weather)
+        }
+    }
+
+    fun loadWeatherHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            weatherHistory = weatherHistoryRepository.getWeatherHistory()
+            // Update UI with history data
         }
     }
 }

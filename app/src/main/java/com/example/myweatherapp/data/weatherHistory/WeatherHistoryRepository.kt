@@ -1,6 +1,6 @@
 package com.example.myweatherapp.data.weatherHistory
 
-class WeatherRepository(private val weatherHistoryDao: WeatherHistoryDao) {
+class WeatherHistoryRepository(private val weatherHistoryDao: WeatherHistoryDao) {
     suspend fun insertWeatherHistory(weather: WeatherHistory) {
         weatherHistoryDao.insertWeather(weather)
     }
