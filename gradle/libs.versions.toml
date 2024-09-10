@@ -29,6 +29,7 @@ roomKtx = "2.6.1"
 roomRuntime = "2.6.1"
 ui = "1.6.8"
 uiToolingPreview = "1.6.8"
+workRuntimeKtx = "2.9.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.35.2-beta" }
@@ -41,6 +42,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }

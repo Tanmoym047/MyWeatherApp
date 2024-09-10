@@ -62,12 +62,10 @@ dependencies {
     // navigation
     implementation (libs.androidx.navigation.compose)
 
-
     // Sqlite
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-
 
     // Location
     implementation(libs.play.services.location)
@@ -77,10 +75,10 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
+
 //    implementation(libs.coil)
     implementation(libs.coil.kt.coil)
     implementation(libs.coil.compose)
-
 
     // Viewmodel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -88,8 +86,13 @@ dependencies {
 
     // Layout
     implementation(libs.accompanist.systemuicontroller)
+
     // font
     implementation (libs.fontawesomecompose)
+
+    // Workmanager
+    implementation (libs.androidx.work.runtime.ktx)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

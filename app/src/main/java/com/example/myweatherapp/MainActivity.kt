@@ -132,6 +132,7 @@ class MainActivity : ComponentActivity() {
         initViewModel()
 //        enableEdgeToEdge()
         setContent {
+            val viewModel = MainViewModel()
             var currentLocation by remember {
                 mutableStateOf(LatLng(0.0, 0.0))
             }
@@ -147,6 +148,7 @@ class MainActivity : ComponentActivity() {
                             location.latitude,
                             location.longitude
                         )
+                        viewModel.currentLocation = currentLocation
                     }
                 }
             }
@@ -186,6 +188,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     private fun fetchWeatherInformation(mainViewModel: MainViewModel, currentLocation: LatLng) {
         mainViewModel.state = STATE.LOADING

@@ -3,6 +3,7 @@ package com.example.myweatherapp.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,9 +23,10 @@ enum class STATE{
 
 class MainViewModel(
 ): ViewModel() {
-
+    // Repo
     val userRepository = Graph.userRepository
     val weatherHistoryRepository = Graph.weatherHistoryRepository
+
     // control state
     var state by mutableStateOf(STATE.LOADING)
     var city by mutableStateOf("")
@@ -35,6 +37,10 @@ class MainViewModel(
     // Forecast API value hold
     var forecastResponse: ForecastResult by mutableStateOf(ForecastResult())
     var errorMessage: String by mutableStateOf("")
+
+    // Current Location
+    var currentLocation by mutableStateOf(LatLng(0.0, 0.0))
+
 
     fun onChangeCity(cityName: String) {
         city = cityName
