@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -184,7 +185,9 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     drawerContent = {
-                        Column {
+                        Column(
+                            modifier = Modifier.background(Color.DarkGray).fillMaxHeight()
+                        ) {
                             DrawerItem(item = Screen.Home){
                                 scope.launch {
                                     scaffoldState.drawerState.close()
@@ -342,6 +345,7 @@ class MainActivity : ComponentActivity() {
                 ){
                     OutlinedTextField(
                         modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
+                        shape = RoundedCornerShape(12.dp),
                         value = mainViewModel.city,
                         onValueChange = {
                             mainViewModel.onChangeCity(it)
@@ -365,8 +369,6 @@ class MainActivity : ComponentActivity() {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Search", tint = Color.White)
                     }
                 }
-                
-
 
                 when (mainViewModel.state) {
                     STATE.LOADING -> {
@@ -446,6 +448,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DrawerItem(
         item: Screen,
+
         onDrawerItemClicked: () -> Unit
     ){
         Row(
@@ -459,9 +462,9 @@ class MainActivity : ComponentActivity() {
         ) {
 //            val navController = rememberNavController()
             Text(
-
                 text = item.route,
-                style = androidx.compose.material.MaterialTheme.typography.h5
+                style = androidx.compose.material.MaterialTheme.typography.h5,
+                color = Color.White
             )
         }
     }

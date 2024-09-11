@@ -9,11 +9,6 @@ import com.example.myweatherapp.data.weatherHistory.WeatherHistoryRepository
 object Graph {
     lateinit var database: UserDatabase
 
-//    val db = Room.databaseBuilder(
-//        applicationContext,
-//        UserDatabase::class.java, "weather-app-database"
-//    ).build()
-
     val userRepository by lazy {
         UserRepository(userDao = database.userDao())
     }

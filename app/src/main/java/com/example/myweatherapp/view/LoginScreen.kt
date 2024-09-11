@@ -5,12 +5,14 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
 import com.example.myweatherapp.constant.Const.Companion.colorBg2
@@ -32,14 +35,12 @@ import com.example.myweatherapp.navigation.Screen
 import com.example.myweatherapp.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     val context = LocalContext.current
-
 
     val scope = rememberCoroutineScope()
 
@@ -62,18 +63,21 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         TextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
+            label = { Text("Username", color = Color.White) },
         )
+        Spacer(modifier = Modifier.padding(bottom = 8.dp))
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Password", color = Color.White) },
             visualTransformation = PasswordVisualTransformation()
         )
 
-        Button(onClick = {
-//            navController.navigate(Screen.Home.route)
-            scope.launch {
+        Button(
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+            onClick = {
+//               navController.navigate(Screen.Home.route)
+                scope.launch {
                 mainViewModel.login(username, password)
 
                 if (mainViewModel.loginState != null) {
@@ -87,15 +91,14 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
 //                navController.navigate(Screen.Error.route)
                 }
             }
-
-
-
         }) {
-            Text("Login")
+            Text("Login" , color = Color.White)
         }
 
-        TextButton(onClick = { navController.navigate(Screen.Register.route) }) {
-            Text("Don't have an account? Register")
+        TextButton(
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
+            onClick = { navController.navigate(Screen.Register.route) }) {
+            Text("Don't have an account? Register", color = Color.White)
         }
     }
 }

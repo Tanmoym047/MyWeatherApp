@@ -64,7 +64,6 @@ fun ForecastSection(forecastResponse: ForecastResult) {
                                                 time = if(dateTime == null) NA
                                                 else timestampToHumanData(dateTime.toLong(), "EEE HH:mm")
                                         }
-
                                         ForecastTitle(temp = temp, image = icon, time = time)
                                 }
                         }
@@ -86,7 +85,7 @@ fun ForecastTitle(temp: String, image: String, time: String) {
         )
     ){
         Column (
-            modifier = Modifier.padding(40.dp),
+            modifier = Modifier.padding(35.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
