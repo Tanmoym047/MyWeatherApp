@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,12 +55,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -186,15 +190,15 @@ class MainActivity : ComponentActivity() {
                     },
                     drawerContent = {
                         Column(
-                            modifier = Modifier.background(Color.DarkGray).fillMaxHeight()
+                            modifier = Modifier.background(Color.DarkGray).fillMaxHeight().padding(top = 16.dp)
                         ) {
-                            DrawerItem(item = Screen.Home){
+                            DrawerItem(item = Screen.Home, icon = R.drawable.baseline_home_24){
                                 scope.launch {
                                     scaffoldState.drawerState.close()
                                 }
                                 navController.navigate(Screen.Home.route)
                             }
-                            DrawerItem(item = Screen.History){
+                            DrawerItem(item = Screen.History, icon = R.drawable.baseline_history_24){
                                 scope.launch {
                                     scaffoldState.drawerState.close()
                                 }
@@ -302,8 +306,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         )
-        
-
 
         val gradient = Brush.linearGradient(
             colors = listOf(Color(colorBg1), Color(colorBg2)),
@@ -361,7 +363,7 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                     Button(
                         colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
-                        shape = RoundedCornerShape(23.dp),
+                        shape = RoundedCornerShape(12.dp),
                         onClick = {
                             fetchWeatherInformationByCity(mainViewModel)
                         }
@@ -426,7 +428,7 @@ class MainActivity : ComponentActivity() {
     fun Navigation(context: Context, navController : NavHostController, currentLocation: LatLng, viewModel: MainViewModel, padding: PaddingValues){
 //        val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = Screen.Login.route) {
+        NavHost(navController = navController, startDestination = Screen.Login.route, modifier = Modifier.padding(padding)) {
             composable(Screen.Login.route) {
                 LoginScreen(navController, mainViewModel)
             }
@@ -448,7 +450,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DrawerItem(
         item: Screen,
-
+        @DrawableRes icon: Int,
         onDrawerItemClicked: () -> Unit
     ){
         Row(
@@ -457,10 +459,16 @@ class MainActivity : ComponentActivity() {
                 .padding(horizontal = 8.dp, vertical = 16.dp)
                 .clickable {
                     onDrawerItemClicked()
-                }
+                },
+            verticalAlignment = Alignment.CenterVertically,
 
         ) {
-//            val navController = rememberNavController()
+            Icon(
+                painter = painterResource(id = icon),
+                contentDescription = null,
+                modifier = Modifier.padding(end = 8.dp, top = 4.dp),
+                tint = Color.White
+            )
             Text(
                 text = item.route,
                 style = androidx.compose.material.MaterialTheme.typography.h5,

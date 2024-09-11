@@ -76,22 +76,22 @@ fun LoginScreen(navController: NavController, mainViewModel: MainViewModel) {
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray),
             onClick = {
-//               navController.navigate(Screen.Home.route)
                 scope.launch {
-                mainViewModel.login(username, password)
+                    mainViewModel.login(username, password)
 
-                if (mainViewModel.loginState != null) {
-                    // Todo location screen
-                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screen.Home.route)
+                    if (mainViewModel.loginState != null) {
+                        // Todo location screen
+                        Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                        mainViewModel.loginState = null
+                        navController.navigate(Screen.Home.route)
+                    } else {
+                        // Show error
+                        Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show()
 
-                } else {
-                    // Show error
-                    Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show()
-//                navController.navigate(Screen.Error.route)
+                    }
                 }
             }
-        }) {
+        ) {
             Text("Login" , color = Color.White)
         }
 
