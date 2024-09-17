@@ -1,4 +1,4 @@
-![Weather App Screenshot](app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
+
 <div align="center">
 <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" alt="Weather App Icon" width=25% height=25%>
   <h1 align="center">MyWeatherApp</h1>
@@ -42,8 +42,19 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
     <img src="screenshots/Screenshot_20240918_022040_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
     <img src="screenshots/Screenshot_20240918_022057_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
     <img src="screenshots/Screenshot_20240918_022210_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-    <img src="screenshots/Screenshot_20240918_022221_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-  
+    <img src="screenshots/Screenshot_20240918_022221_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>  
 </div>
+
+## External Dependencies
+
+- Jetpack Compose UI
+- ViewModel
+- Navigation
+- Room Database(Sqlite)
+- Location Services
+- Retrofit
+- Coil Compose
+- WorkManager
+- Awesome Font
 
 
