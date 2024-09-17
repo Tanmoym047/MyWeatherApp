@@ -34,6 +34,7 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
 ## Screenshots
 
 Add screenshots of your app here.
+![Weather App Screenshot](app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 
 ## License
 
