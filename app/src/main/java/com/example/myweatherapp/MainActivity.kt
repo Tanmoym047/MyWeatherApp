@@ -1,15 +1,17 @@
 package com.example.myweatherapp
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -55,7 +57,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -75,7 +76,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.myweatherapp.constant.Const.Companion.colorBg1
@@ -83,6 +83,8 @@ import com.example.myweatherapp.constant.Const.Companion.colorBg2
 import com.example.myweatherapp.constant.Const.Companion.permissions
 import com.example.myweatherapp.model.LatLng
 import com.example.myweatherapp.navigation.Screen
+import com.example.myweatherapp.network.ApiService
+import com.example.myweatherapp.network.RetrofitClient
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
 import com.example.myweatherapp.view.ErrorScreen
 import com.example.myweatherapp.view.ForecastSection
@@ -99,8 +101,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
@@ -213,8 +218,57 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        createNotificationChannel()
+//        showWeatherNotification(25.0, "Sunny")
+        fetchAndShowWeatherNotification("Rajshahi")
         scheduleWeatherWorker()
+
+
     }
+
+    // Fetch weather from OpenWeatherMap API and show notification
+    private fun fetchAndShowWeatherNotification(city: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiService = RetrofitClient.getInstance()
+            try {
+                // Fetch current weather data
+                val apiResponse = apiService.getWeatherByCity(city)
+
+                // Get temperature and description
+                val temperature = apiResponse.main?.temp ?: 0.0
+                val description = apiResponse.weather?.get(0)?.description ?: "null"
+
+                // Show notification with weather data
+                withContext(Dispatchers.Main) {
+                    showWeatherNotification(temperature, description)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun showWeatherNotification(temperature: Double, description: String) {
+        val weatherNotification = WeatherNotification()
+        weatherNotification.showWeatherNotification(this, temperature, description)
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Weather Updates"
+            val descriptionText = "Shows current weather description and temperature"
+            val importance = NotificationManager.IMPORTANCE_LOW // Low so it's persistent but not intrusive
+            val channel = NotificationChannel("weather_channel", name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     private fun scheduleWeatherWorker() {
         // Schedule WorkManager to run the WeatherWorker every 1 hour
         val weatherWorkerRequest = PeriodicWorkRequestBuilder<WeatherWorker>(1, TimeUnit.HOURS)
@@ -237,6 +291,7 @@ class MainActivity : ComponentActivity() {
     private fun fetchWeatherInformation(mainViewModel: MainViewModel, currentLocation: LatLng) {
         mainViewModel.state = STATE.LOADING
         mainViewModel.getWeatherByLocation(currentLocation)
+
         mainViewModel.getForecastByLocation(currentLocation)
         mainViewModel.state = STATE.SUCCESS
     }
@@ -271,6 +326,7 @@ class MainActivity : ComponentActivity() {
             }
 
         }
+
 
         val systemUiController = rememberSystemUiController()
         

@@ -1,15 +1,19 @@
 package com.example.myweatherapp.viewmodel
 
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.myweatherapp.Graph
+import com.example.myweatherapp.R
 import com.example.myweatherapp.data.user.User
 import com.example.myweatherapp.data.weatherHistory.WeatherHistory
 import com.example.myweatherapp.model.Forecast.ForecastResult

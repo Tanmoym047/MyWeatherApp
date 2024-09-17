@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.BATTERY_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
     <application
         android:name=".UserDatabaseInit"
         android:allowBackup="true"
