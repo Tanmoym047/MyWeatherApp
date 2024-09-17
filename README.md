@@ -28,7 +28,7 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
 - The app stores user credentials in the SQLite database via Room. Users can register and then log in with their username and password.
 
 ### 2. Fetching Weather Data
-- Weather data is fetched from the OpenWeatherMap API using Retrofit.
+- Weather data is fetched from the OpenWeatherMap API using Retrofit by city name of latitude & longitude.
 
 ### 3. Storing Weather History
 - Every hour, the app fetches the latest weather data and stores it in the SQLite database. The data is then viewable from the history section in the app's drawer menu.
