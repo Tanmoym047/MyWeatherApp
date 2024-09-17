@@ -1,5 +1,9 @@
 ![Weather App Screenshot](app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
-# MyWeatherApp
+<div align="center">
+<img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" alt="Weather App Icon" width=25% height=25%>
+  <h1 align="center">MyWeatherApp</h1>
+  <p align="center">A Kotlin Weather app</p>
+</div>
 
 An Android weather application built using Jetpack Compose, MVVM architecture, Retrofit for API calls to OpenWeatherMapApi, and Room for SQLite database. The app allows users to register and log in, fetch weather updates, store history, and display real-time notifications.
 
@@ -33,11 +37,13 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
 - A notification is triggered when the app is opened and updated every hour with the latest weather data. The notification persists until the app is closed.
 
 ## Screenshots
+<div align="center">
+    <img src="screenshots/Screenshot_20240918_022033_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022040_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022057_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022210_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022221_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
+  
+</div>
 
-Add screenshots of your app here.
-
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
