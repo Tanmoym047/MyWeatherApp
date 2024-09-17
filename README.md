@@ -1,6 +1,5 @@
-<p align="center">
-    ![Weather App Screenshot](app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
-</p>
+
+![Weather App Screenshot](app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 # MyWeatherApp
 
 An Android weather application built using Jetpack Compose, MVVM architecture, Retrofit for API calls to OpenWeatherMapApi, and Room for SQLite database. The app allows users to register and log in, fetch weather updates, store history, and display real-time notifications.
