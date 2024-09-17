@@ -258,7 +258,7 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Weather Updates"
             val descriptionText = "Shows current weather description and temperature"
-            val importance = NotificationManager.IMPORTANCE_LOW // Low so it's persistent but not intrusive
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("weather_channel", name, importance).apply {
                 description = descriptionText
             }

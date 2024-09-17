@@ -14,7 +14,8 @@ class WeatherNotification {
             .setContentTitle("Rajshahi")
             .setContentText("$temperature°C  •  $description")
             .setOngoing(true) // Makes it a persistent notification
-            .setPriority(NotificationCompat.PRIORITY_LOW) // Ensures it's persistent but not intrusive
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .build()
 
         notificationManager.notify(1, notification) // Notify with a unique ID
