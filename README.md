@@ -59,6 +59,8 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
 
 ## Download
 
+Download the apk from the release section (https://github.com/Tanmoym047/MyWeatherApp/releases)
+
 ## Build Manual
 
 ### Package & Software Requirements
