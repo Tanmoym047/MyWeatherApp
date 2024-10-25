@@ -36,25 +36,71 @@ An Android weather application built using Jetpack Compose, MVVM architecture, R
 ### 4. Notifications
 - A notification is triggered when the app is opened and updated every hour with the latest weather data. The notification persists until the app is closed.
 
+[//]: # (## External Dependencies)
+
+[//]: # ()
+[//]: # (- Jetpack Compose UI)
+
+[//]: # (- ViewModel)
+
+[//]: # (- Navigation)
+
+[//]: # (- Room Database&#40;Sqlite&#41;)
+
+[//]: # (- Location Services)
+
+[//]: # (- Retrofit)
+
+[//]: # (- Coil Compose)
+
+[//]: # (- WorkManager)
+
+[//]: # (- Awesome Font)
+
+## Download
+
+## Build Manual
+
+### Package & Software Requirements
+
+| Component               | Version/Details                  |
+|-------------------------|----------------------------------|
+| **IDE**                 | Android Studio (2023 or later)   |
+| **Installed Packages**  |                                  |
+| `Jetpack Compose UI`    | 1.9.1                            |
+| `Kotlin Coroutine`      | 1.8.1                            |
+| `ViewModel`             | 2.6.1                            |
+| `Navigation`            | 2.8.0                            |
+| `Room Database(Sqlite)` | 2.6.1                            |
+| `Location Services`     | 21.3.0                           |
+| `Retrofit`              | 2.11.0                           |
+| `GSON`                  | 2.10.1                           |
+| `okhttp`                | 5.0.0-alpha.2                    |
+| `Coil Compose`          | 2.7.0                            |
+| `WorkManager`           | 2.9.1                            |
+| `Awesome Font`          | 1.0.0                            |
+
+### Installation
+
+- Download & Install latest Android Studio IDE (https://developer.android.com/studio)
+- Configure an Android Emulator in the IDE
+- Clone the project repository using:
+    ```bash
+      git clone https://github.com/Tanmoym047/MyWeatherApp
+    ```
+- Make Sure all the dependencies are added in the build file (build.gradle.kts:app) in the project   
+- Run the build to run the emulator and app.
+
 ## Screenshots
+
 <div align="center">
-    <img src="screenshots/Screenshot_20240918_022033_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-    <img src="screenshots/Screenshot_20240918_022040_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-    <img src="screenshots/Screenshot_20240918_022057_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-    <img src="screenshots/Screenshot_20240918_022210_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>
-    <img src="screenshots/Screenshot_20240918_022221_MyWeatherApp.jpg" alt="Movies app preview" width=25% height=25%>  
+    <img src="screenshots/Screenshot_20240918_022033_MyWeatherApp.jpg" alt="" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022040_MyWeatherApp.jpg" alt="" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022057_MyWeatherApp.jpg" alt="" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022210_MyWeatherApp.jpg" alt="" width=25% height=25%>
+    <img src="screenshots/Screenshot_20240918_022221_MyWeatherApp.jpg" alt="" width=25% height=25%>  
 </div>
 
-## External Dependencies
 
-- Jetpack Compose UI
-- ViewModel
-- Navigation
-- Room Database(Sqlite)
-- Location Services
-- Retrofit
-- Coil Compose
-- WorkManager
-- Awesome Font
 
 
